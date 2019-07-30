@@ -6,10 +6,6 @@ export class FEvent {
         this._event = evt
     }
 
-    public get get(): any {
-        return this._data
-    }
-    public get event(): string {
-        return this._event
-    }
+    public get get(): any { return this._data }
+    public get event(): string { return this._event }
 }

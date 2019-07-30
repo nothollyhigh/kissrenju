@@ -2,10 +2,10 @@ import { EventHandler, EventListeners } from "../Support/EventListeners";
 import { FEvent } from "../Support/FEvent";
 
 export class Event {
-    private static _eventMap: Map<string, EventListeners> = new Map
+    private static _eventMap: { [key: string]: EventListeners } = {}
 
     public static emit(evtName: string, data?: any): void {
-        let listeners = this._eventMap.get(evtName)
+        let listeners = this._eventMap[evtName]
         if (!listeners || listeners.isEmpty()) { return }
 
         listeners.isInvoking = true
@@ -28,10 +28,10 @@ export class Event {
     }
 
     public static on(evtName: string, handler: EventHandler, target: any = null): void {
-        let listener = this._eventMap.get(evtName)
+        let listener = this._eventMap[evtName]
         if (!listener) {
             listener = new EventListeners
-            this._eventMap.set(evtName, listener)
+            this._eventMap[evtName] = listener
         }
         listener.addListener(handler, target)
     }
@@ -46,7 +46,7 @@ export class Event {
     }
 
     public static rm(evtName: string, handler: EventHandler, target: any = null): void {
-        let listeners = this._eventMap.get(evtName)
+        let listeners = this._eventMap[evtName]
         if (!listeners || listeners.isEmpty()) { return }
         if (target) {
             if (listeners.isInvoking) { listeners.cancelByHandTarget(handler, target) }
@@ -58,14 +58,15 @@ export class Event {
     }
 
     public static rmByTarget(target: any): void {
-        this._eventMap.forEach(ls => {
+        for (let k in this._eventMap) {
+            let ls = this._eventMap[k]
             if (ls.isEmpty()) { return }
             if (ls.isInvoking) { ls.cancelByTarget(target) }
             else { ls.rmByTarget(target) }
-        })
+        }
     }
     public static rmByEventName(evtName: string): void {
-        let listeners = this._eventMap.get(evtName)
+        let listeners = this._eventMap[evtName]
         if (!listeners || listeners.isEmpty()) { return }
         if (listeners.isInvoking) { listeners.cancelAll() }
         else { listeners.rmAll() }

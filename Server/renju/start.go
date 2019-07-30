@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	app.Startup("v0.0.1")
+	app.Startup()
 
 	util.HandleSignal(func(sig os.Signal) {
 		if sig == syscall.SIGTERM || sig == syscall.SIGINT {
