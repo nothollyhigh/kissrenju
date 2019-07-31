@@ -21,7 +21,6 @@ func startWsServer()  {
 	var err error
 	//var cipher = net.NewCipherGzip(net.CipherGzipAll)
 
-
 	wsServer, err = net.NewWebsocketServer("renju", ":8080")
 	wsServer.HandleWs("/")
 	if err != nil {

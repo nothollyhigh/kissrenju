@@ -1,50 +1,60 @@
 import { Package } from "./Package";
 import { Handler } from "./Handler";
 import { IHandler } from "../../Iface/IHandler";
-import { MsgContent } from "./MsgContent";
+import { Message } from "./Message";
 
 export class Client {
-    public static getClient(): Client {
-        return new Client
-    }
-
+    public static getClient(): Client { return new Client }
     private _ws: WebSocket = null
     private _status: boolean = false
     private _handler: Handler = null
+    private _target: any = null
+    private _onOpen: Function = null
+    private _onClose: Function = null
+
+    public constructor() {
+        this._handler = new Handler()
+    }
 
     public connected(URI: string): void {
         if (URI.indexOf("ws://") == -1) { return }
         this._ws = new WebSocket(URI)
-        this._ws.onclose = this._onClose.bind(this)
-        this._ws.onmessage = this._onMessage.bind(this)
-        this._ws.onerror = this._onError.bind(this)
-        this._ws.onopen = this._onOpen.bind(this)
+        this._ws.onclose = this.onClose.bind(this)
+        this._ws.onmessage = this.onMessage.bind(this)
+        this._ws.onerror = this.onError.bind(this)
+        this._ws.onopen = this.onOpen.bind(this)
         this._ws.binaryType = "arraybuffer"
     }
 
-    private _onOpen(): void {
+    public setCallBack(target: any, Open: Function, Close: Function): void {
+        this._target = target
+        this._onOpen = Open
+        this._onClose = Close
+    }
+
+    private onOpen(): void {
         this._status = true
-        console.log("连接成功")
+        if (this._onOpen != null) { this._onOpen.call(this._target, null) }
     }
 
-    private _onError(): void {
+    private onError(): void {
         this._status = false
-        console.log("_onError")
+        if (this._onClose != null) { this._onClose.call(this._target, null) }
     }
 
-    private _onMessage(ev: MessageEvent): void {
+    private onMessage(ev: MessageEvent): void {
         if (ev.data instanceof ArrayBuffer) {
             let pk = Package.getPackage(ev.data)
             pk.ReadPack()
             let handler = this.Handler.getHandlerByMsgid(pk.cmdID)
-            if (handler != null) { handler.onDeal(this._ws, new MsgContent(pk.Data, pk.cmdID)) }
+            if (handler != null) { handler.onDeal(this._ws, new Message(pk.Data, pk.cmdID)) }
             else { console.log("Not Found cmdID:", "0x" + pk.cmdID) }
         }
     }
 
-    private _onClose(): void {
+    private onClose(): void {
         this._status = false
-        console.log("_onClose")
+        if (this._onClose != null) { this._onClose.call(this._target, null) }
     }
 
     public setHandler(msgid: number, handler: IHandler, cover: boolean = false): void {

@@ -9,6 +9,7 @@ require (
 	github.com/gorilla/websocket v1.4.0
 	github.com/json-iterator/go v1.1.7
 	github.com/nothollyhigh/kiss v0.0.0-20190728064602-3a43922689be
+	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	google.golang.org/appengine v1.6.1 // indirect
 )

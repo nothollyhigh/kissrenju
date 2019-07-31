@@ -3,7 +3,6 @@ const packageBodySize = 4   //包体长度
 const packageCmd = 4        //协议号
 const packageCustom = 8     //扩展字段
 const headSize = packageBodySize + packageCmd + packageCustom
-const Mask = 0x100
 const Gzip = 1 << 31
 const CmdPing = 0x1 << 24
 

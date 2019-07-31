@@ -1,17 +1,19 @@
 import View from "../Core/View";
-import { ClientManager } from "../Core/Managers/ClientManager";
-const { ccclass, property, executeInEditMode } = cc._decorator;
+import { AppMain } from "../Core/AppMain";
+import AlertPanel from "../Renju/Panel/AlertPanel";
+import { EventNamse } from "../Renju/Support/EventNames";
+import LoginPanel from "../Renju/Panel/LoginPanel";
+import { Event } from "../Core/Managers/Event";
 
+const { ccclass, property } = cc._decorator;
 @ccclass
-// @executeInEditMode
 export class GameScene extends View {
-    //网络测试
-    start() {
-        let client = ClientManager.GetClient("test")
-        client.connected("ws://127.0.0.1:8080")
-        setTimeout(() => {
-            console.log(111)
-            ClientManager.SendMessageByClient("test", 1, {})
-        }, 2000);
+    start(): void {
+        let aleart = this.node.getChildByName("Alert").getComponent(AlertPanel)
+        let loginPanel = this.node.getChildByName("Login").getComponent(LoginPanel)
+        AppMain.getGameController().addModule(EventNamse.Panel_Login, loginPanel)
+        AppMain.getGameController().addModule(EventNamse.Panel_Alert, aleart)
+        //等待一些资源的加载完毕
+        Event.emit(EventNamse.NET_Connected)
     }
 }

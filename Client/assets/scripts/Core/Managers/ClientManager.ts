@@ -11,7 +11,7 @@ export class ClientManager {
         return this._clients[clientName]
     }
 
-    public static SendMessageByClient(clientName: string, cmd: number, data: any): void {
+    public static SendMessage(clientName: string, cmd: number, data: any): void {
         if (!this._clients[clientName]) { return }
         let pk = Package.getPackage(data)
         let msg = pk.WritePack(cmd)
