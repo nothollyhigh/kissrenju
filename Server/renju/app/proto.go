@@ -6,27 +6,33 @@ import (
 )
 
 const (
-	CMD_LOGIN_REQ        uint32 = 1 // 登录请求
-	CMD_LOGIN_RSP        uint32 = 2 // 登录响应
-	CMD_BROADCAST_NOTIFY uint32 = 3 // 广播通知
+	CMD_LOGIN_REQ  = iota + 0xA1  //登录请求
+	CMD_LOGIN_RSP  //登录响应
+	CMD_START_MATCH_REQ  //开始匹配
+	CMD_START_MATCH_RSP  //匹配成功
 )
 
+type StartMatchRsp struct {
+	Roomid string
+	NickName []string
+	ServerPos int
+	CurRound int  //到谁的回合
+}
+
 type LoginReq struct {
+	Account string  `json:"account"`
+	Password string `json:"password"`
 }
 
 type LoginRsp struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
-	Name string `json:"name"`
+	Code int `json:"code"`
+	Msg string `json:"msg"`
+	Data interface{} `json:"data,omitempty"`
 }
 
-type KickNotify struct {
-	Msg string `json:"msg"`
-}
 
-type BroadcastNotify struct {
-	Msg string `json:"msg"`
-}
+
+
 
 func NewMessage(cmd uint32, v interface{}) *net.Message {
 	data, ok := v.([]byte)

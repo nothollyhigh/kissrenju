@@ -1,7 +1,7 @@
 import { RenjuProxy } from "../Renju/Proto/RenjuProxy";
-import { EventNamse } from "../Renju/Support/EventNames";
+import { EventNames } from "../Renju/Support/EventNames";
 import { ClientManager } from "./Managers/ClientManager";
-import { Event } from "./Managers/Event";
+import { EventManager } from "./Managers/EventManager";
 import { FEvent } from "./Support/FEvent";
 import View from "./View";
 import { ClientNames } from "../Renju/Support/ClientNames";
@@ -14,18 +14,19 @@ export class GameController {
         this.addEvents()
     }
 
-    private initDatas(): void { }
+    private initDatas(): void {
+    }
 
     private _netOpen(): void {
-        Event.emit(EventNamse.SHOW_PANEL, { module: EventNamse.Panel_Login })
+        EventManager.emit(EventNames.SHOW_PANEL, { module: EventNames.Panel_Login })
         new RenjuProxy()
 
     }
     private _netClose(): void { }
 
     private addEvents(): void {
-        Event.on(EventNamse.SHOW_PANEL, this._showPanel, this)
-        Event.on(EventNamse.NET_Connected, this._connected, this)
+        EventManager.on(EventNames.SHOW_PANEL, this._showPanel, this)
+        EventManager.on(EventNames.NET_Connected, this._connected, this)
     }
 
 

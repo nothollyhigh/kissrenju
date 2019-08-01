@@ -14,7 +14,7 @@ export class Package {
 
     public WritePack(cmd: number): ArrayBuffer {
         this._cmd = cmd
-        let dataArr = new TextEncoder().encode(this._data)
+        let dataArr = new TextEncoder().encode(JSON.stringify(this._data))
         length = dataArr.length
         let buf = this._getBuff(length)
         for (let i = 0; i < length; i++) { buf.setUint8(headSize + i, dataArr[i]) }
@@ -42,7 +42,7 @@ export class Package {
         //     // this._data = pako.ungzip(body, { to: "string" })
         // } else { }
         if (this._cmd == CmdPing) { return }
-        let data = new TextDecoder("utf-8").decode(this._data)
+        let data = new TextDecoder("utf-8").decode(body)
         if (length > 0 && body.byteLength > 16) { this._data = JSON.parse(data) }
     }
 

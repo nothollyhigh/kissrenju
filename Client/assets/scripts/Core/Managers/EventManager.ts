@@ -1,7 +1,7 @@
 import { EventHandler, EventListeners } from "../Support/EventListeners";
 import { FEvent } from "../Support/FEvent";
 
-export class Event {
+export class EventManager {
     private static _eventMap: { [key: string]: EventListeners } = {}
 
     public static emit(evtName: string, data?: any): void {

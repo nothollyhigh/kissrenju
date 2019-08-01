@@ -17,6 +17,7 @@ export default class AlertPanel extends View {
         super.render(data)
     }
 
+    //关闭
     private close(): void {
         this.node.active = false
         if (!!this._func && typeof this._func == "function") { this._func() }
