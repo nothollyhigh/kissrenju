@@ -11,4 +11,9 @@ export namespace C2S_Msg {
     export function Match(): void {
         ClientManager.SendMessage(ClientNames.RENJU, cmdID.CMD_START_MATCH, {})
     }
+
+    //下棋动作
+    export function GoChess(pos: any): void {
+        ClientManager.SendMessage(ClientNames.RENJU, cmdID.CMD_GO_CHESS, pos)
+    }
 }

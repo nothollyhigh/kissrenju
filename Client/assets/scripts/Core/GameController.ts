@@ -5,6 +5,7 @@ import { EventManager } from "./Managers/EventManager";
 import { FEvent } from "./Support/FEvent";
 import View from "./View";
 import { ClientNames } from "../Renju/Support/ClientNames";
+import { GameDataManager } from "./Managers/GameDataManager";
 
 export class GameController {
     private _modules: { [key: string]: View } = {}
@@ -15,6 +16,7 @@ export class GameController {
     }
 
     private initDatas(): void {
+        window["GameDataManager"] = GameDataManager.ins
     }
 
     private _netOpen(): void {

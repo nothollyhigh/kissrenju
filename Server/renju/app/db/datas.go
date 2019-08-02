@@ -1,9 +1,9 @@
 package db
 
 type LoginInfo struct {
-	ID int
+	ID      int
 	Account string
-	Name   string
-	Sex  byte
+	Name    string
+	Sex     byte
+	RoomId  string
 }
-

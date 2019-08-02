@@ -49,25 +49,6 @@ MAKE:
 		goto MAKE
 	}
 	NewRoom(id,players)
-
-	rsp := &StartMatchRsp{
-		Roomid:id,
-		CurRound:0,
-	}
-
-	var names []string
-	for _,v := range players{
-		ud := UserManager.Get(v).UserData().(*db.LoginInfo)
-		names = append(names,ud.Name)
-	}
-	rsp.NickName = names
-
-	for k := range players{
-		rsp.ServerPos = k
-		UserManager.Get(players[k]).SendMsg(NewMessage(CMD_START_MATCH_RSP,rsp))
-	}
-
-
 }
 
 func GenerateRangeNum(min, max int) int {

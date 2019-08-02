@@ -11,11 +11,18 @@ export default class UserPanel extends View {
     private nickname: cc.Label = null
     private id: cc.Label = null
 
+    protected addEvents(): void {
+        EventManager.on(EventNames.STARTGAME, this._StartGame, this)
+    }
+
+
+    private _StartGame(): void {
+        cc.tween(this.node).to(0.25, { opacity: 0 }).start()
+    }
 
     start() {
         this.nickname = this.node.getChildByName("nickname").getComponent(cc.Label)
         this.id = this.node.getChildByName("ID").getComponent(cc.Label)
-
         this.nickname.string = "昵称:" + GameDataManager.ins.Name
         this.id.string = "ID:" + GameDataManager.ins.ID
 

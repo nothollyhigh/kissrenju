@@ -7,13 +7,10 @@ import { GameDataManager } from "../../../Core/Managers/GameDataManager";
 export class S2C_StartGame extends MsgHander {
     public onDeal(client: WebSocket, msg: Message): void {
         let data = msg.content
-        if (data.code != 0) {
-            EventManager.emit(EventNames.SHOW_PANEL, { module: EventNames.Panel_Alert, text: data.msg })
-            return
-        }
-
+        console.log("S2C_StartGame", data)
+        GameDataManager.ins.serverPos = data.serverPos
         GameDataManager.ins.update(data)
-        EventManager.emit(EventNames.LOGINSUCCESS, data)
-        EventManager.emit(EventNames.SHOW_PANEL, { module: EventNames.Panel_UserInfo })
+        EventManager.emit(EventNames.STARTGAME, data)
+        EventManager.emit(EventNames.SHOW_PANEL, { module: EventNames.Panel_ChessBoard })
     }
 }
